@@ -1,27 +1,27 @@
 # L-Lang
 A programming language made in python
 # Important Stuff
-printf(…)
-$ = …
-@ = {… , … , etc.}
-goto(…)
-if (…) goto …
-def #{}
-return
-*…  …
-#()
+printf(…)<br>
+$... = …<br>
+@... = {… , … , etc.}<br>
+goto(…)<br>
+if (…) goto …<br>
+def #func() {}<br>
+return<br>
+\*… (arg) …<br>
+\#func<br>
 
-The main data types will be:
-Int
-Float
-Boolean - %true/false
-String - "…"
-Array - {…}
+The main data types will be:<br>
+Int<br>
+Float<br>
+Boolean - %true/false<br>
+String - "…"<br>
+Array - {…}<br>
 
-The main symbols will be:
-"" = string
-$ = variable
-@ = array
-# = function
-* = math
-% = boolean
+The main symbols will be:<br>
+"" = string<br>
+$ = variable<br>
+@ = array<br>
+\# = function<br>
+\* = math<br>
+% = boolean<br>

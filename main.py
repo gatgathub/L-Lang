@@ -57,6 +57,7 @@ def freadlines(file_n):
     else: return False
 
 
+vars = {}
 program = input("Program: ")
 prog_f = program + ".l"
 if file_exists(prog_f):
@@ -104,6 +105,18 @@ if file_exists(prog_f):
                     else:
                         string += x
                 print(string)
+            elif chars[7] == "$":
+                start = 0
+                for x in range(8):
+                    del chars[0]
+                string = ""
+                for x in chars:
+                    if x == " " or x == ")":
+                        break
+                    else:
+                        string += x
+                print(vars[string])
+
         elif mode == 1:
             varname = string
             string = ""
@@ -119,19 +132,19 @@ if file_exists(prog_f):
             for x in range(spaces):
                 del chars[0]
             if chars[0] == "$":
-                del chars[0]
                 for x in chars:
                     string += x
-                eval(f"{varname} = {string}")
+                vars[varname] = "$"+string
             elif chars[0] == "\"" or chars[0] == "'":
                 del chars[0]
                 del chars[len(chars) - 1]
+                del chars[len(chars) - 1]
                 for x in chars:
                     string += x
-                eval(f"{varname} = {string}")
+                vars[varname] = string
             else:
                 for x in chars:
                     string += x
-                eval(f"{varname} = {string}")
+                vars[varname] = int(string)
         cnt += 1
 input()

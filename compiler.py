@@ -85,8 +85,10 @@ def freadlines(file_n):
 vars = {}
 program = input("Program: ")
 prog_f = program + ".l"
+new_f = program + ".py"
 print_b = ""
 if file_exists(prog_f):
+    fwrite(new_f, "")
     lines = freadlines(prog_f)
     i = 0
     #for x in lines:
@@ -133,7 +135,7 @@ if file_exists(prog_f):
                         rem = 1
                     elif rem == 1:
                         if x == "n":
-                            string += "\n"
+                            string += "\\n"
                         else:
                             string += x
                         rem = 0
@@ -150,7 +152,7 @@ if file_exists(prog_f):
                         break
                     else:
                         string += x
-                print_b += vars[string]
+                print_b += "{"+string+"}"
         #
         elif mode == 1:
             varname = string
@@ -170,6 +172,7 @@ if file_exists(prog_f):
                 for x in chars:
                     string += x
                 vars[varname] = "$"+string
+                fappend(new_f, f"{varname} = {string}\n")
             elif chars[0] == "\"" or chars[0] == "'":
                 del chars[0]
                 del chars[len(chars) - 1]
@@ -177,10 +180,13 @@ if file_exists(prog_f):
                 for x in chars:
                     string += x
                 vars[varname] = string
+                fappend(new_f, f"{varname} = \"{string}\"\n")
             else:
                 for x in chars:
                     string += x
                 vars[varname] = int(string)
+                fappend(new_f, f"{varname} = {string}\n")
         cnt += 1
-    print(print_b)
+print("Finished Compiling")
+fappend(new_f, f"print(f\"{print_b}\")")
 input()

@@ -1,3 +1,6 @@
+import sys
+
+
 def fwrite(file_n, cont):
     file = open(file_n, "w")
     file.write(str(cont))
@@ -83,10 +86,16 @@ def freadlines(file_n):
 
 
 vars = {}
-program = input("Program: ")
-prog_f = program + ".l"
+if len(sys.argv) < 2:
+    program = input("Program: (auto fills the .l) ") + ".l"
+    prog_f = program
+else:
+    program = sys.argv[1]
+    prog_f = program
+new_f = program + ".py"
 print_b = ""
 if file_exists(prog_f):
+    fwrite(new_f, "")
     lines = freadlines(prog_f)
     i = 0
     #for x in lines:
@@ -120,23 +129,14 @@ if file_exists(prog_f):
                     string += x
             i += 1
         if mode == 0 and string == "printf":
-            if chars[7] == "\"" or chars[7] == "'":
+            if chars[7] == '"' or chars[7] == "'":
                 start = 0
                 for x in range(8):
                     del chars[0]
                 string = ""
-                rem = 0
                 for x in chars:
-                    if x == "\"" or x == "'":
+                    if x == '"' or x == "'":
                         break
-                    elif x == "\\":
-                        rem = 1
-                    elif rem == 1:
-                        if x == "n":
-                            string += "\n"
-                        else:
-                            string += x
-                        rem = 0
                     else:
                         string += x
                 print_b += string
@@ -150,7 +150,45 @@ if file_exists(prog_f):
                         break
                     else:
                         string += x
-                print_b += vars[string]
+                print_b += "{" + string + "}"
+        elif mode == 0 and string == "input":
+            if chars[6] == '"' or chars[6] == "'":
+                start = 0
+                for x in range(7):
+                    del chars[0]
+                string = ""
+                for x in chars:
+                    if x == '"' or x == "'":
+                        break
+                    else:
+                        string += x
+                print_b += string
+                fappend(new_f, f"_input = input(f\"{print_b}\")\n")
+                print_b = ""
+            elif chars[7] == "$":
+                start = 0
+                for x in range(7):
+                    del chars[0]
+                string = ""
+                for x in chars:
+                    if x == " " or x == ")":
+                        break
+                    else:
+                        string += x
+                print_b += "{"+string+"}"
+            elif chars[7] == ")":
+                pass
+            else:
+                start = 0
+                for x in range(7):
+                    del chars[0]
+                string = ""
+                for x in chars:
+                    if x == " " or x == ")":
+                        break
+                    else:
+                        string += x
+                print_b += string
         #
         elif mode == 1:
             varname = string
@@ -169,18 +207,25 @@ if file_exists(prog_f):
             if chars[0] == "$":
                 for x in chars:
                     string += x
-                vars[varname] = "$"+string
-            elif chars[0] == "\"" or chars[0] == "'":
+                if varname == "_printbuff":
+                    print_b = string
+                else:
+                    vars[varname] = vars[string]
+                fappend(new_f, f"{varname} = {string}\n")
+            elif chars[0] == '"' or chars[0] == "'":
                 del chars[0]
                 del chars[len(chars) - 1]
                 del chars[len(chars) - 1]
                 for x in chars:
                     string += x
                 vars[varname] = string
+                fappend(new_f, f"{varname} = \"{string}\"\n")
             else:
                 for x in chars:
                     string += x
                 vars[varname] = int(string)
+                fappend(new_f, f"{varname} = {string}\n")
         cnt += 1
-    print(print_b)
+print("Finished Compiling")
+fappend(new_f, f"print(f\"{print_b}\")")
 input()

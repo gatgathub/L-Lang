@@ -205,6 +205,7 @@ if file_exists(prog_f):
             for x in range(spaces):
                 del chars[0]
             if chars[0] == "$":
+                del chars[0]
                 for x in chars:
                     string += x
                 if varname == "_printbuff":
@@ -226,6 +227,6 @@ if file_exists(prog_f):
                 vars[varname] = int(string)
                 fappend(new_f, f"{varname} = {string}\n")
         cnt += 1
-print("Finished Compiling")
 fappend(new_f, f"print(f\"{print_b}\")")
-input()
+print("Finished Compiling")
+if len(sys.argv) < 2: input()

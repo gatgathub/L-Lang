@@ -1,5 +1,6 @@
 # L
 A language written in python.
+# 
 # L current stuff
 variables: $var = "var"<br>
 print vars: printf($var)<br>

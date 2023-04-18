@@ -151,6 +151,19 @@ if file_exists(prog_f):
                     else:
                         string += x
                 print_b += "{" + string + "}"
+            elif chars[7] == ")":
+                pass
+            else:
+                start = 0
+                for x in range(7):
+                    del chars[0]
+                string = ""
+                for x in chars:
+                    if x == "r" or x == ")":
+                        break
+                    else:
+                        string += x
+                print_b += string
         elif mode == 0 and string == "input":
             if chars[6] == '"' or chars[6] == "'":
                 start = 0
@@ -163,9 +176,10 @@ if file_exists(prog_f):
                     else:
                         string += x
                 print_b += string
+                vars["_input"] = string
                 fappend(new_f, f"_input = input(f\"{print_b}\")\n")
                 print_b = ""
-            elif chars[7] == "$":
+            elif chars[6] == "$":
                 start = 0
                 for x in range(7):
                     del chars[0]
@@ -175,8 +189,13 @@ if file_exists(prog_f):
                         break
                     else:
                         string += x
-                print_b += "{"+string+"}"
-            elif chars[7] == ")":
+                print_b += "{" + string + "}"
+                vars["_input"] = vars[string]
+                fappend(new_f, f"_input = input(f\"{print_b}\")\n")
+                print_b = ""
+            elif chars[6] == ")":
+                fappend(new_f, f"input(f\"{print_b}\")\n")
+                print_b = ""
                 pass
             else:
                 start = 0
@@ -207,6 +226,7 @@ if file_exists(prog_f):
             if chars[0] == "$":
                 del chars[0]
                 for x in chars:
+                    if x == "\n": break
                     string += x
                 if varname == "_printbuff":
                     print_b = string

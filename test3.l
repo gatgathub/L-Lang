@@ -3,7 +3,7 @@ $name = $_input
 input("What is your favorite game?: ")
 $game = $_input
 printf("Oh, hi, ")
-printf($game)
+printf($name)
 printf("!\n")
 printf("I never knew your favorite game was ")
 printf($game)

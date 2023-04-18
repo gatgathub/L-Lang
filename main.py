@@ -239,13 +239,19 @@ if file_exists(prog_f):
                 del chars[len(chars) - 1]
                 for x in chars:
                     string += x
-                vars[varname] = string
-                fappend(new_f, f"{varname} = \"{string}\"\n")
+                if varname == "_printbuff":
+                    print_b = string
+                else:
+                    vars[varname] = string
+                    fappend(new_f, f"{varname} = \"{string}\"\n")
             else:
                 for x in chars:
                     string += x
-                vars[varname] = int(string)
-                fappend(new_f, f"{varname} = {string}\n")
+                if varname == "_printbuff":
+                    print_b = string
+                else:
+                    vars[varname] = int(string)
+                    fappend(new_f, f"{varname} = {string}\n")
         cnt += 1
 fappend(new_f, f"print(f\"{print_b}\")")
 print("Finished Compiling")
